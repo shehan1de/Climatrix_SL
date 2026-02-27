@@ -12,14 +12,12 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# ---------------- Load model & scaler ----------------
 with open("models/xgb_best_model.pkl", "rb") as f:
     model = pickle.load(f)
 
 with open("models/scaler.pkl", "rb") as f:
     scaler = pickle.load(f)
 
-# ---------------- Load dataset ----------------
 df_clean = pd.read_csv("models/cleaned_dataset.csv")
 
 feature_cols = [

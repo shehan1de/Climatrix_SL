@@ -5,7 +5,6 @@ import { FaDownload } from "react-icons/fa";
 import logo from "../../assets/logo.png";
 import Footer from "../../components/Footer";
 
-// ✅ Cities (from your dataset)
 const CITY_OPTIONS = [
   "Athurugiriya","Badulla","Bentota","Colombo","Galle","Gampaha",
   "Hambantota","Hatton","Jaffna","Kalmunai","Kalutara","Kandy",
