@@ -1,7 +1,6 @@
 const Query = require("../Model/Query");
 const Counter = require("../Model/Counter");
 
-// ✅ POST /api/contact
 exports.createQuery = async (req, res) => {
   try {
     const { name, email, message } = req.body;

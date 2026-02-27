@@ -7,9 +7,6 @@ const sendOtpEmail = require("../Service/emailService");
 
 const generateOtp = () => crypto.randomInt(100000, 999999).toString();
 
-/* =========================
-   REGISTER
-========================= */
 const registerUser = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -50,9 +47,6 @@ const registerUser = async (req, res) => {
     }
 };
 
-/* =========================
-   LOGIN
-========================= */
 const login = async (req, res) => {
     const { email, password } = req.body;
 
@@ -94,9 +88,6 @@ const login = async (req, res) => {
     }
 };
 
-/* =========================
-   REQUEST PASSWORD RESET
-========================= */
 const requestPasswordReset = async (req, res) => {
     const { email } = req.body;
 
@@ -109,7 +100,7 @@ const requestPasswordReset = async (req, res) => {
         const otp = generateOtp();
 
         user.resetToken = await bcrypt.hash(otp, 10);
-        user.resetTokenExpiry = Date.now() + 10 * 60 * 1000; // 10 minutes
+        user.resetTokenExpiry = Date.now() + 10 * 60 * 1000;
         await user.save();
 
         await sendOtpEmail(email, otp);
@@ -121,9 +112,6 @@ const requestPasswordReset = async (req, res) => {
     }
 };
 
-/* =========================
-   VERIFY OTP CODE
-========================= */
 const verifyCode = async (req, res) => {
     const { email, code } = req.body;
 
@@ -146,9 +134,6 @@ const verifyCode = async (req, res) => {
     }
 };
 
-/* =========================
-   RESET PASSWORD
-========================= */
 const resetPassword = async (req, res) => {
     const { email, code, newPassword } = req.body;
 

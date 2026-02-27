@@ -7,7 +7,6 @@ const Navbar = () => {
     <div className="navbar-wrapper position-absolute w-100">
       <div className="navbar-container d-flex align-items-center justify-content-between">
         
-        {/* 🔹 Glass Bar – Logo */}
         <div className="glass-navbar brand-glass d-flex align-items-center">
           <Link
             className="navbar-brand d-flex align-items-center gap-3 mb-0"
@@ -24,7 +23,6 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {/* 🔹 Glass Bar – Navigation */}
         <nav className="glass-navbar nav-glass navbar navbar-expand-lg navbar-dark px-4">
           <button
             className="navbar-toggler ms-auto"

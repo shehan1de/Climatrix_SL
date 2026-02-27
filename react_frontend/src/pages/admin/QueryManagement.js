@@ -2,12 +2,8 @@ import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { FaEnvelope, FaEye, FaReply, FaSyncAlt, FaTimes } from "react-icons/fa";
 
-// ✅ If your services/api.js already exists, you can use that instead.
-// But keeping this component self-contained like your current code.
 const API_BASE = "http://localhost:5001";
 
-// ✅ Backend is mounted as app.use("/api", adminQueryRoutes)
-// So admin endpoints are /api/admin/queries...
 const API = axios.create({
   baseURL: API_BASE,
 });
@@ -20,7 +16,7 @@ const toDateTime = (iso) => {
 };
 
 const QueryManagement = () => {
-  // auth (admin)
+
   const stored = useMemo(() => {
     try {
       return JSON.parse(localStorage.getItem("user")) || null;
@@ -30,19 +26,15 @@ const QueryManagement = () => {
   }, []);
   const adminId = stored?.userId;
 
-  // data
   const [queries, setQueries] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // alert UI
   const [alert, setAlert] = useState({ type: "", message: "" });
 
-  // filters
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState("All"); // All | Pending | Resolved
-  const [sortOrder, setSortOrder] = useState("latest"); // latest | oldest
+  const [statusFilter, setStatusFilter] = useState("All");
+  const [sortOrder, setSortOrder] = useState("latest");
 
-  // reply modal
   const [showReplyModal, setShowReplyModal] = useState(false);
   const [replyTarget, setReplyTarget] = useState(null);
   const [replyForm, setReplyForm] = useState({
@@ -51,11 +43,9 @@ const QueryManagement = () => {
   });
   const [sending, setSending] = useState(false);
 
-  // view answer modal
   const [showViewModal, setShowViewModal] = useState(false);
   const [viewTarget, setViewTarget] = useState(null);
 
-  // auto hide alert
   useEffect(() => {
     if (alert.message) {
       const timer = setTimeout(() => setAlert({ type: "", message: "" }), 3000);
@@ -66,13 +56,9 @@ const QueryManagement = () => {
   const setErr = (message) => setAlert({ type: "error", message });
   const setOk = (message) => setAlert({ type: "success", message });
 
-  // =========================
-  // Fetch queries
-  // =========================
   const fetchQueries = async () => {
     setLoading(true);
     try {
-      // ✅ Correct route
       const res = await API.get("/api/admin/queries");
 
       const arr = Array.isArray(res.data?.queries) ? res.data.queries : [];
@@ -89,9 +75,6 @@ const QueryManagement = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [adminId]);
 
-  // =========================
-  // Filtered list
-  // =========================
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
 
@@ -124,9 +107,6 @@ const QueryManagement = () => {
     return { pending, resolved, total: queries.length };
   }, [queries]);
 
-  // =========================
-  // Reply modal handlers
-  // =========================
   const openReply = (q) => {
     setReplyTarget(q);
     setReplyForm({
@@ -150,11 +130,10 @@ const QueryManagement = () => {
 
     setSending(true);
     try {
-      // ✅ Correct route
       await API.post(`/api/admin/queries/${replyTarget._id}/reply`, {
         subject: replyForm.subject,
         replyMessage: msg,
-        repliedBy: adminId, // optional
+        repliedBy: adminId,
       });
 
       setOk("Reply sent and query marked as resolved");
@@ -167,9 +146,6 @@ const QueryManagement = () => {
     }
   };
 
-  // =========================
-  // View answer modal handlers
-  // =========================
   const openView = (q) => {
     setViewTarget(q);
     setShowViewModal(true);
@@ -184,7 +160,6 @@ const QueryManagement = () => {
 
   return (
     <div className="history-page">
-      {/* Alert */}
       {alert.message && (
         <div
           className={`login-alert ${
@@ -195,7 +170,6 @@ const QueryManagement = () => {
         </div>
       )}
 
-      {/* Loading overlay */}
       {loading && (
         <div className="loading-overlay">
           <div className="spinner-border text-light" role="status" />
@@ -203,7 +177,6 @@ const QueryManagement = () => {
       )}
 
       <div className="history-container">
-        {/* HERO */}
         <div className="history-hero">
           <h1 className="history-title">
             <span className="brand-gradient">Query</span> Management
@@ -217,7 +190,6 @@ const QueryManagement = () => {
           </div>
         </div>
 
-        {/* CONTROLS */}
         <div className="glass-panel history-controls">
           <div
             className="history-controls-row"
@@ -267,7 +239,6 @@ const QueryManagement = () => {
           </div>
         </div>
 
-        {/* TABLE */}
         <div className="glass-panel mt-3">
           <div className="ins-card-title">All Queries</div>
 
@@ -323,7 +294,6 @@ const QueryManagement = () => {
                       </td>
                       <td>
                         <div style={{ display: "flex", gap: 10 }}>
-                          {/* Reply */}
                           <button
                             className="icon-action-btn"
                             title="Reply"
@@ -333,7 +303,6 @@ const QueryManagement = () => {
                             <FaReply />
                           </button>
 
-                          {/* View Answer */}
                           <button
                             className="icon-action-btn"
                             title="View Answer"
@@ -344,7 +313,6 @@ const QueryManagement = () => {
                             <FaEye />
                           </button>
 
-                          {/* Email Icon */}
                           <button
                             className="icon-action-btn"
                             title="Email"
@@ -369,7 +337,6 @@ const QueryManagement = () => {
         </div>
       </div>
 
-      {/* REPLY MODAL */}
       {showReplyModal && replyTarget && (
         <div className="modal d-block logout-overlay">
           <div className="modal-dialog modal-dialog-centered">
@@ -473,7 +440,6 @@ const QueryManagement = () => {
         </div>
       )}
 
-      {/* VIEW ANSWER MODAL */}
       {showViewModal && viewTarget && (
         <div className="modal d-block logout-overlay">
           <div className="modal-dialog modal-dialog-centered">

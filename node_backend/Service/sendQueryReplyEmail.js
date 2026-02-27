@@ -1,13 +1,11 @@
-// Service/sendQueryReplyEmail.js
 const nodemailer = require("nodemailer");
 const path = require("path");
 
-// ✅ create once (reuse connection)
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS, // App Password recommended
+    pass: process.env.EMAIL_PASS,
   },
 });
 

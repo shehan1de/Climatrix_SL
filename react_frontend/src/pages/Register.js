@@ -63,7 +63,6 @@ const Register = () => {
 
   return (
     <div className="app-background login-background d-flex flex-column">
-      {/* Alert */}
       {alert.message && (
         <div
           className={`login-alert ${
@@ -75,15 +74,11 @@ const Register = () => {
           {alert.message}
         </div>
       )}
-
-      {/* Loading */}
       {loading && (
         <div className="loading-overlay">
           <img src={logo} alt="Loading..." className="spinner-logo-large" />
         </div>
       )}
-
-      {/* Register Card */}
       {!loading && (
         <div className="auth-page flex-grow-1">
           <div className="auth-glass-card">
@@ -179,8 +174,6 @@ const Register = () => {
           </div>
         </div>
       )}
-
-      {/* Footer */}
       {!loading && <Footer />}
     </div>
   );

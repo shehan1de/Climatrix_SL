@@ -1,4 +1,3 @@
-// server.js
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
@@ -28,7 +27,6 @@ app.use(
 
 app.use(helmet());
 
-// ✅ Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api", adminQueryRoutes);
@@ -37,7 +35,6 @@ app.use("/api/predictions", PredictionRoutes);
 app.use("/api", userRoutes);
 app.use("/api", alertRoutes);
 
-// ✅ Static images
 app.use(
   "/image",
   (req, res, next) => {
@@ -47,7 +44,6 @@ app.use(
   express.static(path.join(__dirname, "image"))
 );
 
-// ✅ 404 MUST BE LAST
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
 });

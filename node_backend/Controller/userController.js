@@ -1,4 +1,3 @@
-// Controller/userController.js
 const User = require("../Model/User");
 const bcrypt = require("bcryptjs");
 const fs = require("fs");
@@ -39,7 +38,6 @@ const addUser = async (req, res) => {
       password,
       role,
       profilePicture: profilePicturePath
-      // emailAlertsEnabled will default to false
     });
 
     await newUser.save();
@@ -169,7 +167,6 @@ const updateProfile = async (req, res) => {
     const user = await User.findOne({ userId });
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    // ✅ Password change (use pre-save hashing by assigning plain password)
     if (currentPassword || newPassword || confirmPassword) {
       if (!currentPassword || !newPassword || !confirmPassword) {
         return res.status(400).json({ message: "Fill all password fields" });
@@ -182,7 +179,6 @@ const updateProfile = async (req, res) => {
         return res.status(400).json({ message: "New password and confirm password do not match" });
       }
 
-      // ✅ IMPORTANT: assign plain password, pre-save hook will hash
       user.password = newPassword;
     }
 
@@ -216,7 +212,7 @@ const updateProfile = async (req, res) => {
       user: {
         name: user.name,
         email: user.email,
-        profilePicture: user.profilePicture, // keep relative
+        profilePicture: user.profilePicture,
         userId: user.userId,
         role: user.role
       }
@@ -227,11 +223,6 @@ const updateProfile = async (req, res) => {
   }
 };
 
-/* ======================================================
-   ✅ NEW: ALERT ENABLE/DISABLE (Client)
-   GET  /api/user/:userId/alerts
-   PUT  /api/user/:userId/alerts
-====================================================== */
 
 const getAlertPreference = async (req, res) => {
   try {
@@ -272,11 +263,6 @@ const updateAlertPreference = async (req, res) => {
   }
 };
 
-/* ======================================================
-   ✅ OPTIONAL: Admin list (enabled/disabled users)
-   GET /api/users/alerts
-   Query: ?enabled=true/false (optional)
-====================================================== */
 const getAlertSubscribers = async (req, res) => {
   try {
     const { enabled } = req.query;
@@ -285,8 +271,6 @@ const getAlertSubscribers = async (req, res) => {
     if (enabled === "true") filter.emailAlertsEnabled = true;
     if (enabled === "false") filter.emailAlertsEnabled = false;
 
-    // You can also restrict to role Client if you want:
-    // filter.role = "Client";
 
     const users = await User.find(filter).select("userId name email role emailAlertsEnabled createdAt");
 
@@ -309,7 +293,6 @@ module.exports = {
   updateProfile,
   upload,
 
-  // ✅ new exports
   getAlertPreference,
   updateAlertPreference,
   getAlertSubscribers

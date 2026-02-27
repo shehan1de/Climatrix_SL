@@ -1,4 +1,3 @@
-// pages/admin/AdminSidebar.js
 import { useState } from "react";
 import {
   FaBell,
@@ -6,8 +5,8 @@ import {
   FaHome,
   FaQuestionCircle,
   FaSignOutAlt,
-  FaUsers,
-  FaUserCircle   // ✅ Added
+  FaUserCircle,
+  FaUsers
 } from "react-icons/fa";
 import { NavLink, useNavigate } from "react-router-dom";
 
@@ -34,7 +33,6 @@ const AdminSidebar = () => {
       <aside className="client-glass-sidebar">
         <div className="client-glass-sidebar-inner">
 
-          {/* Navigation items */}
           <div className="client-glass-nav-items">
             {navItems.map((item) => (
               <NavLink
@@ -51,7 +49,6 @@ const AdminSidebar = () => {
             ))}
           </div>
 
-          {/* Logout bottom */}
           <div className="client-glass-nav-bottom">
             <button
               type="button"
@@ -67,8 +64,6 @@ const AdminSidebar = () => {
           </div>
         </div>
       </aside>
-
-      {/* Logout Confirm Modal */}
       {showConfirm && (
         <div className="modal d-block logout-overlay">
           <div className="modal-dialog modal-dialog-centered">

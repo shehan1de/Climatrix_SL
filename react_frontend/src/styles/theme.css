@@ -1,22 +1,16 @@
-/* ====================
-   Global Reset
-==================== */
 html,
 body {
   margin: 0;
   padding: 0;
-  height: 100%;
+  block-size: 100%;
   overflow: hidden;
   background-color: #000;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* ====================
-   App Background
-==================== */
 .app-background {
-  height: 100vh;
-  width: 100vw;
+  block-size: 100vh;
+  inline-size: 100vw;
   position: relative;
 }
 
@@ -26,7 +20,6 @@ body {
   transition: background-image 1.2s ease-in-out;
 }
 
-/* Dark overlay */
 .bg-overlay {
   position: absolute;
   inset: 0;
@@ -34,7 +27,6 @@ body {
   z-index: 0;
 }
 
-/* Dark overlay */
 .app-background::before {
   content: "";
   position: absolute;
@@ -48,12 +40,9 @@ body {
   z-index: 1;
 }
 
-/* ====================
-   Navbar (Glass)
-==================== */
 .navbar-wrapper {
-  top: 18px;
-  left: 0;
+  inset-block-start: 18px;
+  inset-inline-start: 0;
   padding: 0 24px;
   z-index: 20;
 }
@@ -67,7 +56,6 @@ body {
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
 }
 
-/* Brand gradient */
 .brand-gradient {
   background: linear-gradient(90deg, #00aeef, #a4c639);
   -webkit-background-clip: text;
@@ -75,7 +63,6 @@ body {
   font-weight: 500;
 }
 
-/* Nav links */
 .custom-nav-link {
   color: #ffffff;
   font-weight: 500;
@@ -94,18 +81,14 @@ body {
   font-weight: 600;
 }
 
-/* ====================
-   Home Page
-==================== */
 .home-page {
-  height: 100vh;
+  block-size: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
 }
 
-/* Glass Card */
 .home-glass-card {
   background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(14px);
@@ -118,14 +101,12 @@ body {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
 }
 
-/* Subtitle */
 .home-subtext {
   color: #d0d0d0;
   font-size: 16px;
   line-height: 1.5;
 }
 
-/* Button */
 .btn-green-custom {
   background-color: #a4c639;
   border: none;
@@ -137,36 +118,27 @@ body {
   background-color: #8fbf30;
 }
 
-/* ====================
-   Responsive
-==================== */
 @media (max-width: 576px) {
   .home-glass-card {
     padding: 30px 22px;
   }
 }
 
-/* ====================
-   Dual Glass Navbar
-==================== */
 .navbar-container {
   padding: 0 24px;
   gap: 16px;
 }
 
-/* Logo Glass */
 .brand-glass {
   padding: 12px 26px;
   border-radius: 28px;
   white-space: nowrap;
 }
 
-/* Navigation Glass */
 .nav-glass {
   border-radius: 28px;
 }
 
-/* Mobile stacking */
 @media (max-width: 991px) {
   .navbar-container {
     flex-direction: column;
@@ -183,9 +155,6 @@ body {
 }
 
 
-/* ===============================
-   LOGIN PAGE – FULL BACKGROUND (LOGIN ONLY)
-================================ */
 
 .login-background {
   height: 100vh;
@@ -219,9 +188,7 @@ body {
   z-index: 2;
 }
 
-/* ===============================
-   ALERT MESSAGE
-================================ */
+
 .login-alert {
   position: absolute;
   top: 24px;
@@ -240,21 +207,16 @@ body {
   transition: opacity 0.5s ease-in-out;
 }
 
-/* Error alert */
 .login-alert-error {
-  background-color: rgba(255, 60, 60, 0.9); /* red */
+  background-color: rgba(255, 60, 60, 0.9);
   border: 1px solid rgba(255, 100, 100, 0.7);
 }
 
-/* Success alert */
 .login-alert-success {
-  background-color: rgba(60, 255, 140, 0.9); /* green */
+  background-color: rgba(60, 255, 140, 0.9);
   border: 1px solid rgba(100, 255, 180, 0.7);
 }
 
-/* ===============================
-   BACK BUTTON
-================================ */
 .back-button {
   position: absolute;
   top: 20px;
@@ -271,18 +233,12 @@ body {
   color: #a4c639;
 }
 
-/* ===============================
-   SIGNUP TEXT
-================================ */
 .signup-text {
   font-size: 14px;
   margin-top: 12px;
   color: #686868;
 }
 
-/* ===============================
-   LOADING SPINNER
-================================ */
 .loading-overlay {
   position: fixed;
   inset: 0;
@@ -303,9 +259,7 @@ body {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-/* ===============================
-   AUTH CARD AND INPUTS (existing)
-================================ */
+
 .auth-page {
   height: 100vh;
   display: flex;
@@ -379,48 +333,35 @@ body {
   z-index: 5;
 }
 
-/* Hover effect */
 .password-toggle-icon:hover {
   color: #a4c639;
 }
 
 
-/* Remove underline and style signup link */
 .signup-text .link-green {
-  text-decoration: none; /* remove underline */
-  color: #a4c639;        /* main green color */
+  text-decoration: none;
+  color: #a4c639;
   font-weight: 500;
 }
 
 .signup-text .link-green:hover {
-  color: #8fbf30;        /* slightly darker green on hover */
-  text-decoration: none; /* ensure no underline on hover */
+  color: #8fbf30;
+  text-decoration: none;
 }
 
-/* Forgot password link */
 .auth-glass-card .link-green {
   text-decoration: none;
-  color: #d0ffd6;       /* lighter green for secondary link */
+  color: #d0ffd6;
   font-weight: 400;
 }
 
 .auth-glass-card .link-green:hover {
-  color: #a4c639;       /* main green on hover */
+  color: #a4c639;
   text-decoration: none;
 }
 
 
 
-
-
-
-
-
-
-
-/* ====================
-   SIMPLE HOME LAYOUT
-==================== */
 
 .home-simple {
   height: 100vh;
@@ -431,9 +372,6 @@ body {
   text-align: center;
 }
 
-/* ====================
-   MAIN CONTENT
-==================== */
 
 .home-content {
   max-width: 1020px;
@@ -461,9 +399,6 @@ body {
   line-height: 1.7;
 }
 
-/* ====================
-   ACTION BUTTONS
-==================== */
 
 .home-actions {
   display: flex;
@@ -488,7 +423,6 @@ body {
   background: rgba(255, 255, 255, 0.28);
 }
 
-/* Primary CTA */
 .glass-action-btn.primary {
   background: rgba(164, 198, 57, 0.95);
   color: #000;
@@ -499,9 +433,6 @@ body {
   background: #8fbf30;
 }
 
-/* ====================
-   DESKTOP ENHANCEMENT
-==================== */
 
 @media (min-width: 768px) {
   .home-simple {
@@ -521,9 +452,6 @@ body {
     max-width: 220px;
   }
 }
-/* ====================
-   MOBILE-FIRST HOME
-==================== */
 
 .home-simple {
   height: 100vh;
@@ -534,9 +462,6 @@ body {
   text-align: center;
 }
 
-/* ====================
-   MAIN CONTENT
-==================== */
 
 .home-content {
   max-width: 520px;
@@ -544,7 +469,7 @@ body {
 }
 
 .home-title {
-  font-size: 38px;        /* MOBILE SIZE */
+  font-size: 38px;
   font-weight: 700;
   color: #ffffff;
   line-height: 1.15;
@@ -557,9 +482,6 @@ body {
   line-height: 1.6;
 }
 
-/* ====================
-   ACTION BUTTONS
-==================== */
 
 .home-actions {
   display: flex;
@@ -584,7 +506,6 @@ body {
   background: rgba(255, 255, 255, 0.3);
 }
 
-/* Primary CTA */
 .glass-action-btn.primary {
   background: rgba(164, 198, 57, 0.95);
   color: #000;
@@ -595,9 +516,6 @@ body {
   background: #8fbf30;
 }
 
-/* ====================
-   TABLET
-==================== */
 @media (min-width: 768px) {
   .home-simple {
     padding: 120px 40px 40px;
@@ -625,24 +543,11 @@ body {
   }
 }
 
-/* ====================
-   DESKTOP
-==================== */
 @media (min-width: 1200px) {
   .home-title {
     font-size: 72px;
   }
 }
-
-
-
-
-
-
-
-/* ====================
-   MINIMAL GLASS FOOTER
-==================== */
 
 .app-footer {
   width: 100%;
@@ -667,19 +572,16 @@ body {
   text-align: center;
 }
 
-/* Brand */
 .footer-brand {
   font-size: 16px;
   font-weight: 600;
 }
 
-/* Copyright */
 .footer-copy {
   font-size: 12px;
   color: #bdbdbd;
 }
 
-/* Mobile-first enhancement */
 @media (min-width: 768px) {
   .footer-glass {
     padding: 22px 32px;
@@ -691,19 +593,12 @@ body {
 }
 
 
-
-
-
-
-
-/* Root container */
 .about-root {
   position: relative;
   height: 100vh;
   overflow: hidden;
 }
 
-/* Fixed background */
 .about-fixed-bg {
   position: fixed;
   inset: 0;
@@ -713,7 +608,6 @@ body {
   z-index: 0;
 }
 
-/* Scrollable content layer */
 .about-page {
   position: relative;
   z-index: 2;
@@ -721,7 +615,6 @@ body {
   overflow-y: auto;
 }
 
-/* Existing styles (unchanged) */
 .about-scroll-wrapper {
   padding: 120px 20px 40px;
   max-width: 1200px;
@@ -757,7 +650,7 @@ body {
   max-width: 500px;
   margin: auto;
 }
-/* Fixed alert – always visible */
+
 .fixed-alert {
   position: fixed;
   top: 20px;
@@ -768,11 +661,6 @@ body {
   max-width: 480px;
 }
 
-
-/* ===========================
-   FIX: Overlay should not block UI
-   (Prevents pseudo-elements from covering navbar/profile image)
-=========================== */
 .app-background::before,
 .bg-overlay,
 .login-background::before,
@@ -780,20 +668,14 @@ body {
   pointer-events: none;
 }
 
-/* ===========================
-   FIX: Navbar must stay above overlays
-=========================== */
 .navbar-wrapper {
-  position: fixed;   /* overrides position-absolute from JSX */
+  position: fixed;
   top: 18px;
   left: 0;
   width: 100%;
   z-index: 9999;
 }
 
-/* ===========================
-   FIX: Glass stacking context (backdrop-filter can cause layering issues)
-=========================== */
 .glass-navbar {
   position: relative;
   z-index: 1;
@@ -803,12 +685,6 @@ body {
   position: relative;
   z-index: 2;
 }
-
-
-
-/* ===============================
-   GLASS LOGOUT MODAL
-================================ */
 
 .logout-overlay {
   background: rgba(0, 0, 0, 0.55);
@@ -826,18 +702,12 @@ body {
 }
 
 
-/* =========================================================
-   CLIENT DASHBOARD – FINAL UPDATED VERSION
-========================================================= */
-
-/* Ensure full height */
 html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
 }
 
-/* Background wrapper */
 .dashboard-bg {
   position: relative;
   min-height: 100vh;
@@ -851,12 +721,10 @@ html, body, #root {
   background-size: cover;
   background-attachment: fixed;
 
-  /* ✅ FIX */
   overflow-y: auto;
   overflow-x: hidden;
 }
 
-/* Dark overlay */
 .dashboard-bg::before {
   content: "";
   position: absolute;
@@ -866,21 +734,16 @@ html, body, #root {
   pointer-events: none;
 }
 
-/* Keep content above overlay */
 .dashboard-bg > * {
   position: relative;
   z-index: 1;
 }
 
-/* Page content spacing */
 .client-dashboard-page {
   min-height: 100vh;
-  padding: 120px 24px 50px; /* space for navbar */
+  padding: 120px 24px 50px;
 }
 
-/* =========================
-   HERO SECTION
-========================= */
 
 .dashboard-hero {
   max-width: 1100px;
@@ -905,9 +768,6 @@ html, body, #root {
   margin: 0 auto;
 }
 
-/* =========================
-   CARDS GRID
-========================= */
 
 .dashboard-cards-grid {
   max-width: 1100px;
@@ -917,9 +777,6 @@ html, body, #root {
   gap: 22px;
 }
 
-/* =========================
-   FEATURE CARD
-========================= */
 
 .dashboard-feature-card {
   padding: 28px 26px;
@@ -937,14 +794,12 @@ html, body, #root {
   box-shadow: 0 28px 60px rgba(0, 0, 0, 0.65);
 }
 
-/* Card top section */
 .dashboard-card-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-/* Icon */
 .dashboard-card-icon {
   width: 52px;
   height: 52px;
@@ -957,7 +812,6 @@ html, body, #root {
   border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-/* Badge */
 .dashboard-card-badge {
   font-size: 12px;
   padding: 6px 12px;
@@ -967,7 +821,6 @@ html, body, #root {
   color: #d0d0d0;
 }
 
-/* Card text */
 .dashboard-card-text {
   margin-top: 12px;
   color: #d0d0d0;
@@ -975,7 +828,6 @@ html, body, #root {
   line-height: 1.6;
 }
 
-/* Buttons */
 .dashboard-feature-card .btn {
   border-radius: 12px;
   margin-top: 8px;
@@ -986,9 +838,6 @@ html, body, #root {
   cursor: not-allowed;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
 
 @media (max-width: 992px) {
   .dashboard-cards-grid {
@@ -1015,22 +864,16 @@ html, body, #root {
 }
 
 
-
-
-/* =========================================================
-   PREDICTIONS PAGE – FORM + RESULT (NO BACKGROUND IMAGE)
-========================================================= */
-
 .pred-page {
   min-height: 30vh;
-  background: #000; /* no background image */
+  background: #000;
 }
 
 .pred-container {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 80px 24px 40px; /* space for fixed navbar */
+  padding: 80px 24px 40px;
 }
 
 .pred-hero {
@@ -1050,14 +893,12 @@ html, body, #root {
   margin-bottom: 0;
 }
 
-/* Two cards layout */
 .pred-grid-single {
   display: grid;
   grid-template-columns: 420px 1fr;
   gap: 18px;
 }
 
-/* Glass card */
 .pred-glass-card {
   border-radius: 24px;
   background: rgba(132, 132, 132, 0.16);
@@ -1068,14 +909,12 @@ html, body, #root {
   padding: 22px;
 }
 
-/* Labels */
 .pred-label {
   font-size: 13px;
   color: #d0d0d0;
   margin-bottom: 6px;
 }
 
-/* ✅ Glass Select Styling */
 .glass-select {
   appearance: none;
   -webkit-appearance: none;
@@ -1088,7 +927,6 @@ html, body, #root {
   border-radius: 10px;
 }
 
-/* dropdown arrow fix (optional) */
 .glass-select:focus {
   background-color: rgba(255, 255, 255, 0.12) !important;
   border-color: #a4c639 !important;
@@ -1096,13 +934,11 @@ html, body, #root {
   box-shadow: none;
 }
 
-/* Options (browser-dependent, but helps in many cases) */
 .glass-select option {
   background: #111;
   color: #fff;
 }
 
-/* Result box */
 .pred-result-box {
   display: flex;
   flex-direction: column;
@@ -1130,7 +966,6 @@ html, body, #root {
   text-align: right;
 }
 
-/* Risk chip */
 .pred-risk-chip {
   font-size: 12px;
   padding: 5px 10px;
@@ -1140,7 +975,6 @@ html, body, #root {
   color: #d0d0d0;
 }
 
-/* Plot */
 .pred-plot-img {
   max-width: 100%;
   height: auto;
@@ -1148,7 +982,6 @@ html, body, #root {
   border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-/* Responsive */
 @media (max-width: 992px) {
   .pred-grid-single {
     grid-template-columns: 1fr;
@@ -1159,22 +992,15 @@ html, body, #root {
 }
 
 
-
-/* =========================================================
-   CLIENT GLASS SIDEBAR (ICON ONLY -> HOVER EXPAND WITH TEXT)
-========================================================= */
-
-/* Sidebar container */
 .client-glass-sidebar {
   position: fixed;
-  top: 110px;              /* under top navbar */
+  top: 110px;
   left: 18px;
   z-index: 9998;
 }
 
-/* Rounded glass body */
 .client-glass-sidebar-inner {
-  width: 74px;             /* icon-only width */
+  width: 74px; 
   height: calc(100vh - 140px);
   padding: 12px 10px;
 
@@ -1194,13 +1020,11 @@ html, body, #root {
   overflow: hidden;
 }
 
-/* Expand on hover (shows labels) */
 .client-glass-sidebar-inner:hover {
-  width: 240px; /* expanded width */
+  width: 240px;
   background: linear-gradient(to bottom, #00afef87, #a5c6397b);
 }
 
-/* Items wrapper */
 .client-glass-nav-items,
 .client-glass-nav-bottom {
   display: flex;
@@ -1208,7 +1032,6 @@ html, body, #root {
   gap: 10px;
 }
 
-/* Nav item */
 .client-glass-nav-link {
   width: 100%;
   height: 52px;
@@ -1228,14 +1051,12 @@ html, body, #root {
   cursor: pointer;
 }
 
-/* hover */
 .client-glass-nav-link:hover {
   transform: translateY(-2px);
   background: rgba(0, 0, 0, 0.30);
   border: 1px solid rgba(255, 255, 255, 0.16);
 }
 
-/* Icon */
 .client-glass-nav-icon {
   min-width: 42px;
   height: 42px;
@@ -1252,7 +1073,6 @@ html, body, #root {
   border: 1px solid rgba(255, 255, 255, 0.10);
 }
 
-/* Text label (hidden when collapsed) */
 .client-glass-nav-text {
   white-space: nowrap;
   font-size: 14px;
@@ -1264,13 +1084,11 @@ html, body, #root {
   transition: opacity 0.22s ease, transform 0.22s ease;
 }
 
-/* Show labels only on hover-expand */
 .client-glass-sidebar-inner:hover .client-glass-nav-text {
   opacity: 1;
   transform: translateX(0);
 }
 
-/* Active state */
 .client-glass-nav-link.is-active {
   background: rgba(0, 0, 0, 0.40);
   border: 1px solid rgba(164, 198, 57, 0.35);
@@ -1282,7 +1100,6 @@ html, body, #root {
   border: 1px solid rgba(164, 198, 57, 0.35);
 }
 
-/* Left active indicator glow */
 .client-glass-nav-link.is-active::before {
   content: "";
   position: absolute;
@@ -1294,17 +1111,14 @@ html, body, #root {
   box-shadow: 0 0 14px rgba(164, 198, 57, 0.45);
 }
 
-/* Logout style */
 .client-glass-nav-link.logout .client-glass-nav-icon {
   color: #ff6b6b;
 }
 
-/* Layout padding so your page content doesn't hide behind sidebar */
 .client-layout-with-sidebar {
   padding-left: 120px;
 }
 
-/* Responsive: hide sidebar in mobile */
 @media (max-width: 768px) {
   .client-glass-sidebar {
     display: none;
@@ -1315,7 +1129,7 @@ html, body, #root {
 }
 
 .client-layout-with-sidebar {
-  padding-left: 180px; /* enough for ClientSidebar + VerticalBar */
+  padding-left: 180px;
 }
 
 @media (max-width: 768px) {
@@ -1326,25 +1140,18 @@ html, body, #root {
 
 
 
-
-/* =========================================================
-   PREDICTION HISTORY – GLASS UI
-========================================================= */
-
 .history-page {
   min-height: 100vh;
   background: #000;
 }
 
-/* container */
 .history-container {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 80px 24px 40px; /* space for navbar */
+  padding: 80px 24px 40px;
 }
 
-/* hero */
 .history-hero {
   text-align: center;
   margin-bottom: 18px;
@@ -1363,7 +1170,6 @@ html, body, #root {
   margin: 0;
 }
 
-/* glass panel */
 .glass-panel {
   border-radius: 24px;
   background: rgba(132, 132, 132, 0.16);
@@ -1374,7 +1180,6 @@ html, body, #root {
   padding: 18px;
 }
 
-/* controls */
 .history-controls {
   margin: 18px auto 18px;
 }
@@ -1404,12 +1209,10 @@ html, body, #root {
   font-size: 13px;
 }
 
-/* empty */
 .history-empty {
   margin-top: 18px;
 }
 
-/* grid */
 .history-grid {
   margin-top: 18px;
   display: grid;
@@ -1417,7 +1220,6 @@ html, body, #root {
   gap: 16px;
 }
 
-/* card */
 .history-card {
   border-radius: 24px;
   background: rgba(132, 132, 132, 0.14);
@@ -1435,7 +1237,6 @@ html, body, #root {
   box-shadow: 0 26px 55px rgba(0, 0, 0, 0.62);
 }
 
-/* top row */
 .history-card-top {
   display: flex;
   align-items: flex-start;
@@ -1455,7 +1256,6 @@ html, body, #root {
   margin-top: 10px;
 }
 
-/* chips */
 .chip {
   font-size: 12px;
   padding: 5px 10px;
@@ -1469,7 +1269,6 @@ html, body, #root {
   color: #fff;
 }
 
-/* risk pill */
 .risk-pill {
   padding: 6px 12px;
   border-radius: 999px;
@@ -1482,28 +1281,24 @@ html, body, #root {
   color: #ffffff;
 }
 
-/* Low Risk */
 .risk-pill.risk-low-risk {
   background: rgba(60, 255, 140, 0.18);
   border-color: rgba(60, 255, 140, 0.45);
   color: rgba(60, 255, 140, 0.95);
 }
 
-/* Moderate Risk */
 .risk-pill.risk-moderate-risk {
   background: rgba(255, 193, 7, 0.18);
   border-color: rgba(255, 193, 7, 0.50);
   color: rgba(255, 193, 7, 0.98);
 }
 
-/* High Risk */
 .risk-pill.risk-high-risk {
   background: rgba(255, 60, 60, 0.18);
   border-color: rgba(255, 60, 60, 0.50);
   color: rgba(255, 60, 60, 0.98);
 }
 
-/* message */
 .history-message {
   margin-top: 14px;
   margin-bottom: 0;
@@ -1511,13 +1306,11 @@ html, body, #root {
   line-height: 1.6;
 }
 
-/* series */
 .history-series {
   margin-top: 10px;
   font-size: 13px;
 }
 
-/* plot */
 .history-plot-wrap {
   margin-top: 12px;
   border-radius: 14px;
@@ -1532,7 +1325,6 @@ html, body, #root {
   display: block;
 }
 
-/* responsive */
 @media (max-width: 992px) {
   .history-controls-row {
     grid-template-columns: 1fr 1fr;
@@ -1545,7 +1337,6 @@ html, body, #root {
   }
 }
 
-/* ========= Prediction History: actions row ========= */
 .history-actions {
   margin-top: 14px;
   display: flex;
@@ -1553,7 +1344,6 @@ html, body, #root {
   justify-content: flex-end;
 }
 
-/* icon button style */
 .icon-action-btn {
   width: 44px;
   height: 44px;
@@ -1584,7 +1374,6 @@ html, body, #root {
   transform: none;
 }
 
-/* Refresh icon-btn in controls */
 .icon-btn {
   width: 46px;
   height: 46px;
@@ -1594,12 +1383,10 @@ html, body, #root {
   justify-content: center;
 }
 
-/* Date chip */
 .chip-date {
   color: #bdbdbd;
 }
 
-/* ========= Modal (glass) ========= */
 .history-modal-overlay {
   position: fixed;
   inset: 0;
@@ -1674,13 +1461,6 @@ html, body, #root {
 }
 
 
-
-
-
-
-
-/* styles/theme.css (append at bottom)
-   ✅ Scoped to Insights only (won’t break other pages)
 */
 
 .ins-page {
@@ -1688,7 +1468,7 @@ html, body, #root {
 }
 
 .ins-container {
-  padding: 110px 120px 90px; /* space for top navbar if any */
+  padding: 110px 120px 90px;
 }
 
 .ins-hero {
@@ -1752,7 +1532,6 @@ html, body, #root {
   font-size: 13px;
 }
 
-/* KPI */
 .ins-kpi-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(190px, 1fr));
@@ -1776,7 +1555,6 @@ html, body, #root {
   margin-top: 6px;
 }
 
-/* Main grid */
 .ins-main-grid {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -1884,7 +1662,6 @@ html, body, #root {
   display: block;
 }
 
-/* Latest */
 .ins-latest-title {
   color: #fff;
   font-weight: 800;
@@ -1902,7 +1679,6 @@ html, body, #root {
   margin-top: 8px;
 }
 
-/* Risk pills */
 .ins-risk-pill {
   display: inline-flex;
   align-items: center;
@@ -1928,7 +1704,6 @@ html, body, #root {
   color: #ff4d4d;
 }
 
-/* Table */
 .ins-table-card {
   padding: 14px 14px;
 }
@@ -1948,7 +1723,6 @@ html, body, #root {
   font-size: 12px;
 }
 
-/* Responsive */
 @media (max-width: 1200px) {
   .ins-filters-grid {
     grid-template-columns: repeat(3, minmax(160px, 1fr));
@@ -1973,11 +1747,6 @@ html, body, #root {
     justify-content: flex-start;
   }
 }
-
-
-
-
-/* ✅ Add to styles/theme.css (Profile page only) */
 
 .profile-page {
   min-height: 100vh;
@@ -2004,7 +1773,6 @@ html, body, #root {
   gap: 14px;
 }
 
-/* Glass card */
 .profile-glass-card {
   border-radius: 22px;
   padding: 16px 16px;
@@ -2015,7 +1783,6 @@ html, body, #root {
   color: #fff;
 }
 
-/* Avatar */
 .profile-avatar-wrap {
   display: grid;
   place-items: center;
@@ -2060,7 +1827,6 @@ html, body, #root {
   background: rgba(0, 0, 0, 0.5);
 }
 
-/* Summary */
 .profile-summary {
   margin-top: 14px;
   display: grid;
@@ -2111,7 +1877,6 @@ html, body, #root {
   white-space: nowrap;
 }
 
-/* Form */
 .profile-section-title {
   font-weight: 900;
   margin-bottom: 10px;
@@ -2154,7 +1919,6 @@ html, body, #root {
   font-size: 12px;
 }
 
-/* Responsive */
 @media (max-width: 1100px) {
   .profile-grid {
     grid-template-columns: 1fr;
@@ -2196,5 +1960,5 @@ html, body, #root {
 .client-dashboard-page {
   min-height: 100vh;
   padding: 120px 24px 50px;
-  overflow: visible;   /* ✅ no inner scroll */
+  overflow: visible;
 }

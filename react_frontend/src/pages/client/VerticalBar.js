@@ -30,7 +30,6 @@ const ClientSidebar = () => {
     <>
       <aside className="client-glass-sidebar">
         <div className="client-glass-sidebar-inner">
-          {/* Navigation items */}
           <div className="client-glass-nav-items">
             {navItems.map((item) => (
               <NavLink
@@ -47,7 +46,6 @@ const ClientSidebar = () => {
             ))}
           </div>
 
-          {/* Logout bottom */}
           <div className="client-glass-nav-bottom">
             <button
               type="button"
@@ -63,8 +61,6 @@ const ClientSidebar = () => {
           </div>
         </div>
       </aside>
-
-      {/* Logout Confirm Modal (glass) */}
       {showConfirm && (
         <div className="modal d-block logout-overlay">
           <div className="modal-dialog modal-dialog-centered">

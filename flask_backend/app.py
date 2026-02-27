@@ -54,7 +54,7 @@ def predict():
         parameter = data["parameter"]
         timeframe = data["timeframe"]
         min_or_max = data["min_or_max"]
-        userId = data.get("userId")  # <-- get userId from frontend
+        userId = data.get("userId")
 
         last_rows = df_clean[df_clean["city"] == city].tail(10)
         if last_rows.empty:
@@ -90,7 +90,6 @@ def predict():
             "forecast_plot": generate_forecast_plot(predictions, parameter)
         }
 
-        # -------------------- Save to Node backend --------------------
         if userId is not None:
             send_history_to_node(result, userId=userId)
 

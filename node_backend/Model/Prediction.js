@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const PredictionSchema = new mongoose.Schema({
   userId: {
-    type: Number,      // ✅ numeric user IDs (1,2,3...)
+    type: Number,
     required: true
   },
   city: {

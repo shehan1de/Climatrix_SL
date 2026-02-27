@@ -1,8 +1,6 @@
-// services/sendAlertEmail.js
 const nodemailer = require("nodemailer");
 const path = require("path");
 
-// ✅ create once (reuse connection)
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -11,7 +9,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// ✅ Send ONE alert email to ONE user
 const sendAlertEmail = async ({
   to,
   name = "User",

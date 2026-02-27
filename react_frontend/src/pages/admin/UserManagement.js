@@ -1,4 +1,3 @@
-// pages/admin/UserManagement.js
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { FaPlus, FaRegEdit, FaRegTrashAlt, FaSyncAlt, FaTimes } from "react-icons/fa";
@@ -7,17 +6,15 @@ const API_BASE = "http://localhost:5001";
 const API_PREFIX = "/api";
 const API = axios.create({ baseURL: API_BASE });
 
-// ✅ Same logic as Profile.js (so images always work)
 const toRelativeImagePath = (pic) => {
   if (!pic) return "";
 
   let s = String(pic).trim();
   s = s.replace("/undefined/", "/").replace("undefined//", "");
 
-  // If API returns full URL, extract pathname
   if (/^https?:\/\//i.test(s)) {
     try {
-      s = new URL(s).pathname; // "/image/xxx.png"
+      s = new URL(s).pathname;
     } catch {
       const idx = s.indexOf("/image/");
       if (idx !== -1) s = s.slice(idx);
@@ -51,35 +48,28 @@ const UserManagement = () => {
 
   const adminId = stored?.userId;
 
-  // data
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // ✅ Alert system exactly like Login page
   const [alert, setAlert] = useState({ type: "", message: "" });
 
-  // filters
   const [query, setQuery] = useState("");
   const [roleFilter, setRoleFilter] = useState("All");
 
-  // add/edit modal
   const [showModal, setShowModal] = useState(false);
-  const [mode, setMode] = useState("add"); // add | edit
+  const [mode, setMode] = useState("add");
   const [selected, setSelected] = useState(null);
 
-  // delete confirm modal (logout style)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
 
-  // form
   const [form, setForm] = useState({
     name: "",
     email: "",
     role: "Client",
-    password: "", // only for add
+    password: "",
   });
 
-  // ✅ auto hide alert like login page
   useEffect(() => {
     if (alert.message) {
       const timer = setTimeout(() => setAlert({ type: "", message: "" }), 3000);
@@ -96,7 +86,6 @@ const UserManagement = () => {
       const res = await API.get(`${API_PREFIX}/users`);
       const arr = Array.isArray(res.data) ? res.data : [];
 
-      // ✅ normalize profilePicture like Profile.js (store as "/image/..")
       const normalized = arr.map((u) => {
         const rel = toRelativeImagePath(u?.profilePicture);
         return { ...u, _relPic: rel, _imgSrc: toImgSrcLikeNavbar(rel) };
@@ -112,7 +101,6 @@ const UserManagement = () => {
 
   useEffect(() => {
     fetchUsers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [adminId]);
 
   const filtered = useMemo(() => {
@@ -130,9 +118,6 @@ const UserManagement = () => {
       });
   }, [users, query, roleFilter]);
 
-  // =========================
-  // Modal helpers
-  // =========================
   const openAdd = () => {
     setMode("add");
     setSelected(null);
@@ -159,9 +144,6 @@ const UserManagement = () => {
     setForm({ name: "", email: "", role: "Client", password: "" });
   };
 
-  // =========================
-  // CRUD actions
-  // =========================
   const submitAdd = async () => {
     const name = form.name.trim();
     const email = form.email.trim();
@@ -197,7 +179,6 @@ const UserManagement = () => {
     if (!email.includes("@")) return setErr("Invalid email address");
 
     try {
-      // ✅ condition: admin can't edit password/profile picture
       await API.put(`${API_PREFIX}/user/${selected.userId}`, {
         name,
         email,
@@ -212,7 +193,6 @@ const UserManagement = () => {
     }
   };
 
-  // delete confirm
   const askDelete = (u) => {
     setDeleteTarget(u);
     setShowDeleteConfirm(true);
@@ -238,7 +218,6 @@ const UserManagement = () => {
 
   return (
     <div className="history-page">
-      {/* ✅ Alert UI like Login page */}
       {alert.message && (
         <div
           className={`login-alert ${
@@ -249,16 +228,13 @@ const UserManagement = () => {
         </div>
       )}
 
-      {/* ✅ Loading overlay like Login/Profile */}
       {loading && (
         <div className="loading-overlay">
-          {/* use existing spinner css; no logo needed */}
           <div className="spinner-border text-light" role="status" />
         </div>
       )}
 
       <div className="history-container">
-        {/* HERO */}
         <div className="history-hero">
           <h1 className="history-title">
             <span className="brand-gradient">User</span> Management
@@ -266,7 +242,6 @@ const UserManagement = () => {
           
         </div>
 
-        {/* CONTROLS */}
         <div className="glass-panel history-controls">
           <div className="history-controls-row">
             <input
@@ -306,7 +281,6 @@ const UserManagement = () => {
           </div>
         </div>
 
-        {/* TABLE */}
         <div className="glass-panel">
           <div className="ins-table-wrap">
             <table className="table table-dark table-hover mb-0 ins-table">
@@ -397,9 +371,6 @@ const UserManagement = () => {
         </div>
       </div>
 
-      {/* =======================
-          ADD / EDIT MODAL (Logout popup style)
-      ======================= */}
       {showModal && (
         <div className="modal d-block logout-overlay">
           <div className="modal-dialog modal-dialog-centered">
@@ -421,7 +392,6 @@ const UserManagement = () => {
               </div>
 
               <div className="modal-body">
-                {/* ✅ Profile image preview (read-only) in edit */}
                 {mode === "edit" && (
                   <div className="d-flex align-items-center gap-3 mb-3">
                     <img
@@ -478,7 +448,6 @@ const UserManagement = () => {
                   </select>
                 </div>
 
-                {/* ✅ Password only in ADD */}
                 {mode === "add" && (
                   <div className="mb-2">
                     <input
@@ -517,9 +486,6 @@ const UserManagement = () => {
         </div>
       )}
 
-      {/* =======================
-          DELETE CONFIRM MODAL (Exact logout style)
-      ======================= */}
       {showDeleteConfirm && deleteTarget && (
         <div className="modal d-block logout-overlay">
           <div className="modal-dialog modal-dialog-centered">

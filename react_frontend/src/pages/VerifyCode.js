@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png"; // logo for spinner
+import logo from "../assets/logo.png";
 import API from "../services/api";
 
 const VerifyCode = () => {
@@ -9,16 +9,14 @@ const VerifyCode = () => {
   const [code, setCode] = useState("");
   const [alert, setAlert] = useState({ type: "", message: "" });
   const [loading, setLoading] = useState(false);
-  const [timer, setTimer] = useState(600); // 10 minutes countdown
+  const [timer, setTimer] = useState(600);
 
-  // Redirect if accessed without state (unauthorized access)
   useEffect(() => {
     if (!state?.email) {
       navigate("/forgot-password");
     }
   }, [state, navigate]);
 
-  // Auto-hide alert after 3 seconds
   useEffect(() => {
     if (alert.message) {
       const t = setTimeout(() => setAlert({ type: "", message: "" }), 3000);
@@ -26,7 +24,6 @@ const VerifyCode = () => {
     }
   }, [alert]);
 
-  // Countdown timer for OTP expiration
   useEffect(() => {
     if (timer <= 0) return;
     const interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
@@ -49,7 +46,6 @@ const VerifyCode = () => {
       });
       setAlert({ type: "success", message: "Code verified successfully!" });
 
-      // Navigate after a short delay to show success
       setTimeout(() => {
         navigate("/reset-password", { state: { email: state.email, code } });
       }, 1000);
@@ -63,7 +59,6 @@ const VerifyCode = () => {
     }
   };
 
-  // Format timer in mm:ss
   const formatTime = (seconds) => {
     const m = Math.floor(seconds / 60).toString().padStart(2, "0");
     const s = (seconds % 60).toString().padStart(2, "0");
@@ -72,7 +67,6 @@ const VerifyCode = () => {
 
   return (
     <div className="app-background login-background">
-      {/* Alert message */}
       {alert.message && (
         <div
           className={`login-alert ${
@@ -90,7 +84,6 @@ const VerifyCode = () => {
       ) : (
         <div className="auth-page">
           <div className="auth-glass-card">
-            {/* Back button */}
             <button
               className="btn btn-link back-button"
               onClick={() => navigate(-1)}

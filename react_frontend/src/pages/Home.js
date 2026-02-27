@@ -27,7 +27,6 @@ const Home = () => {
 
       <div className="home-simple">
 
-        {/* ===== MAIN CONTENT ===== */}
         <div className="home-content">
           <h1 className="home-title">
             Predict. <span className="brand-gradient">Prepare.</span> Protect.
@@ -40,7 +39,6 @@ const Home = () => {
           
         </div>
 
-        {/* ===== ACTION BUTTONS ===== */}
         <div className="home-actions">
           <button
             className="glass-action-btn primary"

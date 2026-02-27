@@ -1,7 +1,6 @@
 const Query = require("../Model/Query");
 const sendQueryReplyEmail = require("../Service/sendQueryReplyEmail");
 
-// GET /api/admin/queries
 exports.getAllQueries = async (req, res) => {
   try {
     const queries = await Query.find().sort({ createdAt: -1 });
@@ -11,7 +10,6 @@ exports.getAllQueries = async (req, res) => {
   }
 };
 
-// GET /api/admin/queries/:id
 exports.getOneQuery = async (req, res) => {
   try {
     const q = await Query.findById(req.params.id);
@@ -22,7 +20,6 @@ exports.getOneQuery = async (req, res) => {
   }
 };
 
-// POST /api/admin/queries/:id/reply
 exports.replyToQuery = async (req, res) => {
   try {
     const { replyMessage = "", subject = "", repliedBy } = req.body;

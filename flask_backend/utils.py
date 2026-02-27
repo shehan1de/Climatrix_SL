@@ -25,7 +25,6 @@ def predict_user_weather(
         y_pred = model.predict(X_scaled)[0]
         predictions.append(y_pred)
 
-        # Update lag columns
         for i, col in enumerate([
             "rain_sum", "windspeed_10m_max",
             "windgusts_10m_max", "precipitation_hours"

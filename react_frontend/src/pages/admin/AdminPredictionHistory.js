@@ -10,29 +10,23 @@ const API_PREFIX = "/api";
 const API = axios.create({ baseURL: API_BASE });
 
 const PredictionHistory = () => {
-  // predictions
   const [predictions, setPredictions] = useState([]);
 
-  // ✅ users (for mapping userId -> name/email)
   const [users, setUsers] = useState([]);
-  const [userMap, setUserMap] = useState({}); // { [userId]: userObj }
+  const [userMap, setUserMap] = useState({});
 
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState({ type: "", message: "" });
 
-  // UI filters
   const [search, setSearch] = useState("");
   const [timeframeFilter, setTimeframeFilter] = useState("all");
   const [riskFilter, setRiskFilter] = useState("all");
 
-  // sort filter
-  const [sortOrder, setSortOrder] = useState("latest"); // latest | oldest
+  const [sortOrder, setSortOrder] = useState("latest");
 
-  // plot modal
   const [showPlot, setShowPlot] = useState(false);
   const [selectedPrediction, setSelectedPrediction] = useState(null);
 
-  // Alert timeout
   useEffect(() => {
     if (alert.message) {
       const timer = setTimeout(() => setAlert({ type: "", message: "" }), 3000);
@@ -40,16 +34,12 @@ const PredictionHistory = () => {
     }
   }, [alert]);
 
-  // =========================
-  // Fetch users + predictions
-  // =========================
   const fetchUsers = async () => {
-    // same endpoint used in UserManagement
+
     const res = await API.get(`${API_PREFIX}/users`);
     const arr = Array.isArray(res.data) ? res.data : [];
     setUsers(arr);
 
-    // build map userId -> user
     const map = {};
     arr.forEach((u) => {
       const id = Number(u.userId);
@@ -59,7 +49,6 @@ const PredictionHistory = () => {
   };
 
   const fetchPredictions = async () => {
-    // admin fetch all
     const res = await API.get(`${API_PREFIX}/predictions`);
     const arr = Array.isArray(res.data)
       ? res.data
@@ -86,9 +75,7 @@ const PredictionHistory = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // =========================
-  // Helpers
-  // =========================
+
   const prettyParam = (param) => {
     if (param === "rain_sum") return "Rainfall";
     if (param === "windspeed_10m_max") return "Wind Speed";
@@ -120,7 +107,6 @@ const PredictionHistory = () => {
     return unit ? `${value} ${unit}` : String(value);
   };
 
-  // ✅ user info from prediction.userId using the map
   const getUserInfo = (p) => {
     const id =
       Number(p?.userId) ||
@@ -137,9 +123,6 @@ const PredictionHistory = () => {
     };
   };
 
-  // =========================
-  // Filter + sort list
-  // =========================
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
 
@@ -170,9 +153,7 @@ const PredictionHistory = () => {
     return list;
   }, [predictions, search, timeframeFilter, riskFilter, sortOrder, userMap]);
 
-  // =========================
-  // PDF helpers
-  // =========================
+
   const safeText = (v) =>
     v === null || v === undefined || v === "" ? "—" : String(v);
 
@@ -336,7 +317,6 @@ const PredictionHistory = () => {
     }
   };
 
-  // Plot modal open/close
   const openPlotModal = (p) => {
     setSelectedPrediction(p);
     setShowPlot(true);
@@ -349,7 +329,6 @@ const PredictionHistory = () => {
 
   return (
     <div className="history-page d-flex flex-column">
-      {/* Alerts */}
       {alert.message && (
         <div
           className={`login-alert ${
@@ -360,23 +339,19 @@ const PredictionHistory = () => {
         </div>
       )}
 
-      {/* Loading */}
       {loading && (
         <div className="loading-overlay">
           <img src={logo} alt="Loading..." className="spinner-logo-large" />
         </div>
       )}
 
-      {/* Content */}
       <div className="history-container flex-grow-1">
-        {/* Header */}
         <div className="history-hero">
           <h1 className="history-title">
             <span className="brand-gradient">Prediction</span> History
           </h1>
         </div>
 
-        {/* Controls */}
         <div className="history-controls glass-panel">
           <div className="history-controls-row">
             <input
@@ -440,7 +415,6 @@ const PredictionHistory = () => {
           </div>
         )}
 
-        {/* Cards */}
         <div className="history-grid">
           {filtered.map((p) => {
             const user = getUserInfo(p);
@@ -508,7 +482,6 @@ const PredictionHistory = () => {
         </div>
       </div>
 
-      {/* Plot modal */}
       {showPlot && selectedPrediction && (
         <div className="history-modal-overlay" onClick={closePlotModal}>
           <div className="history-modal-glass" onClick={(e) => e.stopPropagation()}>

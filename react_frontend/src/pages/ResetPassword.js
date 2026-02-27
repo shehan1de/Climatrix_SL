@@ -15,14 +15,12 @@ const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState({ type: "", message: "" });
 
-  /* 🔒 Prevent direct access */
   useEffect(() => {
     if (!state?.email || !state?.code) {
       navigate("/forgot-password");
     }
   }, [state, navigate]);
 
-  /* ⏱ Auto-hide alert */
   useEffect(() => {
     if (alert.message) {
       const timer = setTimeout(
@@ -37,7 +35,6 @@ const ResetPassword = () => {
     e.preventDefault();
     setAlert({ type: "", message: "" });
 
-    /* Validations */
     if (password.length < 6) {
       setAlert({
         type: "error",
@@ -77,7 +74,6 @@ const ResetPassword = () => {
 
   return (
     <div className="app-background login-background">
-      {/* Alert */}
       {alert.message && (
         <div
           className={`login-alert ${
@@ -90,7 +86,6 @@ const ResetPassword = () => {
         </div>
       )}
 
-      {/* Loading */}
       {loading && (
         <div className="loading-overlay">
           <img src={logo} alt="Loading..." className="spinner-logo-large" />
@@ -100,7 +95,6 @@ const ResetPassword = () => {
       {!loading && (
         <div className="auth-page">
           <div className="auth-glass-card">
-            {/* Back button */}
             <button
               className="btn btn-link back-button"
               onClick={() => navigate(-1)}
@@ -113,7 +107,6 @@ const ResetPassword = () => {
             </h3>
 
             <form onSubmit={handleSubmit} autoComplete="off">
-              {/* New Password */}
               <div className="mb-3 position-relative">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -131,7 +124,6 @@ const ResetPassword = () => {
                 </span>
               </div>
 
-              {/* Confirm Password */}
               <div className="mb-4 position-relative">
                 <input
                   type={showConfirm ? "text" : "password"}

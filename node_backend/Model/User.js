@@ -1,4 +1,3 @@
-// Model/User.js
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const AutoIncrement = require("mongoose-sequence")(mongoose);

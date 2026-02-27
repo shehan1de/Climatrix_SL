@@ -14,7 +14,6 @@ const About = () => {
   const [alert, setAlert] = useState({ type: "", message: "" });
   const [loading, setLoading] = useState(false);
 
-  // Auto-hide alert
   useEffect(() => {
     if (alert.message) {
       const timer = setTimeout(
@@ -70,7 +69,6 @@ const About = () => {
   return (
     <div className="about-root">
 
-      {/* FIXED ALERT */}
       {alert.message && (
         <div
           className={`login-alert fixed-alert ${
@@ -83,7 +81,6 @@ const About = () => {
         </div>
       )}
 
-      {/* FIXED BACKGROUND */}
       <div
         className="about-fixed-bg"
         style={{ backgroundImage: `url(${bg1})` }}
@@ -91,10 +88,8 @@ const About = () => {
         <div className="bg-overlay"></div>
       </div>
 
-      {/* SCROLLABLE CONTENT */}
       <div className="about-page">
 
-        {/* LOADING */}
         {loading && (
           <div className="loading-overlay">
             <img src={logo} alt="Loading..." className="spinner-logo-large" />
@@ -104,7 +99,6 @@ const About = () => {
         {!loading && (
           <div className="about-scroll-wrapper">
 
-            {/* HEADER */}
             <div className="about-header-glass">
               <h1 className="about-title">
                 About <span className="brand-gradient">Climatrix</span>
@@ -116,7 +110,6 @@ const About = () => {
               </p>
             </div>
 
-            {/* INFO SECTION */}
             <div className="about-info-grid">
               <div className="about-info-card">
                 <h5 className="brand-gradient">Our Mission</h5>
@@ -142,8 +135,6 @@ const About = () => {
                 </p>
               </div>
             </div>
-
-            {/* CONTACT FORM */}
             <div className="auth-glass-card about-query-card">
               <h4 className="text-center brand-gradient mb-4">
                 Contact Us
@@ -195,7 +186,6 @@ const About = () => {
               </form>
             </div>
 
-            {/* FOOTER */}
             <Footer />
           </div>
         )}

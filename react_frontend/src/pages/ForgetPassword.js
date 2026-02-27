@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/logo.png"; // spinner logo
+import logo from "../assets/logo.png";
 import API from "../services/api";
 
 const ForgetPassword = () => {
@@ -9,7 +9,6 @@ const ForgetPassword = () => {
   const [alert, setAlert] = useState({ type: "", message: "" });
   const [loading, setLoading] = useState(false);
 
-  // Auto-hide alert after 3 seconds
   useEffect(() => {
     if (alert.message) {
       const timer = setTimeout(() => setAlert({ type: "", message: "" }), 3000);
@@ -18,7 +17,6 @@ const ForgetPassword = () => {
   }, [alert]);
 
   const submit = async () => {
-    // Basic validation
     if (!email.includes("@")) {
       setAlert({ type: "error", message: "Please enter a valid email address" });
       return;
@@ -41,7 +39,6 @@ const ForgetPassword = () => {
 
   return (
     <div className="app-background login-background">
-      {/* Alert message */}
       {alert.message && (
         <div
           className={`login-alert ${
@@ -52,7 +49,6 @@ const ForgetPassword = () => {
         </div>
       )}
 
-      {/* Loading spinner */}
       {loading && (
         <div className="loading-overlay">
           <img src={logo} alt="Loading..." className="spinner-logo-large" />
@@ -62,7 +58,6 @@ const ForgetPassword = () => {
       {!loading && (
         <div className="auth-page">
           <div className="auth-glass-card">
-            {/* Back button */}
             <button
               className="btn btn-link back-button"
               onClick={() => navigate(-1)}
@@ -70,7 +65,6 @@ const ForgetPassword = () => {
               &#8592;
             </button>
 
-            {/* Logo + Brand Name */}
             <div className="text-center mb-4">
               <img src={logo} alt="Logo" height={56} className="mb-2" />
               <h3 className="brand-gradient mb-0">CLIMATRIX <span style={{ color: "#00FF41" }}>SL</span></h3>

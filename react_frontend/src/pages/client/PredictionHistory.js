@@ -13,19 +13,15 @@ const PredictionHistory = () => {
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState({ type: "", message: "" });
 
-  // UI filters
   const [search, setSearch] = useState("");
   const [timeframeFilter, setTimeframeFilter] = useState("all");
   const [riskFilter, setRiskFilter] = useState("all");
 
-  // sort filter
-  const [sortOrder, setSortOrder] = useState("latest"); // latest | oldest
+  const [sortOrder, setSortOrder] = useState("latest");
 
-  // plot modal
   const [showPlot, setShowPlot] = useState(false);
   const [selectedPrediction, setSelectedPrediction] = useState(null);
 
-  // Alert timeout
   useEffect(() => {
     if (alert.message) {
       const timer = setTimeout(() => setAlert({ type: "", message: "" }), 3000);
@@ -33,7 +29,6 @@ const PredictionHistory = () => {
     }
   }, [alert]);
 
-  // Fetch user predictions
   const fetchPredictions = async () => {
     if (!userId) return;
     setLoading(true);
@@ -53,15 +48,13 @@ const PredictionHistory = () => {
 
   useEffect(() => {
     fetchPredictions();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
-  // helper: pretty labels
   const prettyParam = (param) => {
     if (param === "rain_sum") return "Rainfall";
     if (param === "windspeed_10m_max") return "Wind Speed";
     if (param === "windgusts_10m_max") return "Wind Gusts";
-    return param; // already friendly on backend
+    return param;
   };
 
   const formatDateTime = (iso) => {
@@ -76,14 +69,11 @@ const PredictionHistory = () => {
       .toLowerCase()
       .replace(/\s+/g, "-")}`;
 
-  // ✅ Units
   const getUnitByParameter = (param) => {
     const p = String(param || "").toLowerCase();
 
-    // backend may store "Rainfall" OR "rain_sum"
     if (p.includes("rain") || p === "rain_sum") return "mm";
 
-    // wind speed / gust
     if (p.includes("gust") || p === "windgusts_10m_max") return "km/h";
     if (p.includes("wind") || p === "windspeed_10m_max") return "km/h";
 
@@ -96,7 +86,6 @@ const PredictionHistory = () => {
     return unit ? `${value} ${unit}` : String(value);
   };
 
-  // Filter + sort list
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
 
@@ -125,7 +114,6 @@ const PredictionHistory = () => {
     return list;
   }, [predictions, search, timeframeFilter, riskFilter, sortOrder]);
 
-  // ===== PDF helpers =====
   const safeText = (v) =>
     v === null || v === undefined || v === "" ? "—" : String(v);
 
@@ -145,7 +133,6 @@ const PredictionHistory = () => {
       img.src = imgSrc;
     });
 
-  // ===== Branded PDF download (no colons) =====
   const downloadPredictionPDF = async (p) => {
     try {
       const doc = new jsPDF("p", "mm", "a4");
@@ -154,23 +141,19 @@ const PredictionHistory = () => {
       const pageH = doc.internal.pageSize.getHeight();
       const margin = 14;
 
-      // Theme colors
       const darkBg = [8, 10, 12];
-      const accentBlue = [0, 174, 239]; // #00aeef
-      const accentGreen = [164, 198, 57]; // #a4c639
+      const accentBlue = [0, 174, 239];
+      const accentGreen = [164, 198, 57];
       const softWhite = [235, 235, 235];
 
-      // Background
       doc.setFillColor(...darkBg);
       doc.rect(0, 0, pageW, pageH, "F");
 
-      // Top bar (approx gradient)
       doc.setFillColor(...accentBlue);
       doc.rect(0, 0, pageW * 0.55, 18, "F");
       doc.setFillColor(...accentGreen);
       doc.rect(pageW * 0.55, 0, pageW * 0.45, 18, "F");
 
-      // Logo center (optional)
       let logoDataUrl = null;
       try {
         logoDataUrl = await toDataUrl(logo);
@@ -191,7 +174,6 @@ const PredictionHistory = () => {
         );
       }
 
-      // Title
       doc.setTextColor(...softWhite);
       doc.setFont("helvetica", "bold");
       doc.setFontSize(18);
@@ -202,7 +184,6 @@ const PredictionHistory = () => {
       doc.setTextColor(185, 185, 185);
       doc.text("Prediction Report", pageW / 2, 56, { align: "center" });
 
-      // Glass card box
       const cardX = margin;
       const cardY = 64;
       const cardW = pageW - margin * 2;
@@ -214,7 +195,6 @@ const PredictionHistory = () => {
       doc.setLineWidth(0.2);
       doc.rect(cardX, cardY, cardW, cardH, "S");
 
-      // Label/value layout (NO colons)
       const labelX = cardX + 10;
       const valueX = cardX + 55;
       let y = cardY + 16;
@@ -224,7 +204,6 @@ const PredictionHistory = () => {
         ["Parameter", safeText(prettyParam(p.parameter))],
         ["Timeframe", safeText(p.timeframe)],
         ["Mode", safeText(p.min_or_max)],
-        // ✅ Value + unit
         ["Value", safeText(formatPredictedValue(p.predicted_value, p.parameter))],
         ["Risk", safeText(p.disaster_risk)],
         ["Date", safeText(formatDateTime(p.createdAt))]
@@ -244,7 +223,6 @@ const PredictionHistory = () => {
         y += 8;
       });
 
-      // Summary
       let msgY = cardY + cardH + 14;
 
       doc.setTextColor(240, 240, 240);
@@ -263,7 +241,6 @@ const PredictionHistory = () => {
 
       msgY += msgLines.length * 5 + 10;
 
-      // Plot (optional)
       if (p.forecast_plot) {
         const imgData = `data:image/png;base64,${p.forecast_plot}`;
         const plotH = 80;
@@ -298,7 +275,6 @@ const PredictionHistory = () => {
         );
       }
 
-      // Footer
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9);
       doc.setTextColor(160, 160, 160);
@@ -320,7 +296,6 @@ const PredictionHistory = () => {
     }
   };
 
-  // Plot modal open/close
   const openPlotModal = (p) => {
     setSelectedPrediction(p);
     setShowPlot(true);
@@ -333,7 +308,6 @@ const PredictionHistory = () => {
 
   return (
     <div className="history-page d-flex flex-column">
-      {/* Alerts */}
       {alert.message && (
         <div
           className={`login-alert ${
@@ -344,23 +318,18 @@ const PredictionHistory = () => {
         </div>
       )}
 
-      {/* Loading */}
       {loading && (
         <div className="loading-overlay">
           <img src={logo} alt="Loading..." className="spinner-logo-large" />
         </div>
       )}
-
-      {/* Content */}
       <div className="history-container flex-grow-1">
-        {/* Header */}
         <div className="history-hero">
           <h1 className="history-title">
             <span className="brand-gradient">Prediction History</span>
           </h1>
         </div>
 
-        {/* Controls */}
         <div className="history-controls glass-panel">
           <div className="history-controls-row">
             <input
@@ -392,7 +361,6 @@ const PredictionHistory = () => {
               <option value="High Risk">High</option>
             </select>
 
-            {/* Sort */}
             <select
               className="form-control glass-input glass-select history-select"
               value={sortOrder}
@@ -403,7 +371,6 @@ const PredictionHistory = () => {
               <option value="oldest">Oldest</option>
             </select>
 
-            {/* Refresh icon */}
             <button
               className="btn btn-outline-light history-refresh icon-btn"
               type="button"
@@ -420,7 +387,6 @@ const PredictionHistory = () => {
           </div>
         </div>
 
-        {/* Empty state */}
         {!loading && filtered.length === 0 && (
           <div className="glass-panel history-empty text-center text-white">
             <h5 className="fw-bold mb-2">No predictions found</h5>
@@ -430,7 +396,6 @@ const PredictionHistory = () => {
           </div>
         )}
 
-        {/* Cards */}
         <div className="history-grid">
           {filtered.map((p) => (
             <div key={p._id} className="history-card">
@@ -444,7 +409,6 @@ const PredictionHistory = () => {
                     <span className="chip">{p.timeframe}</span>
                     <span className="chip">{p.min_or_max}</span>
 
-                    {/* ✅ Value + unit */}
                     <span className="chip chip-strong">
                       Value {formatPredictedValue(p.predicted_value, p.parameter)}
                     </span>
@@ -466,8 +430,6 @@ const PredictionHistory = () => {
                   <span className="text-white-50">{p.forecast_message}</span>
                 </p>
               )}
-
-              {/* Icon actions */}
               <div className="history-actions">
                 <button
                   className="icon-action-btn"
@@ -493,7 +455,6 @@ const PredictionHistory = () => {
         </div>
       </div>
 
-      {/* Plot modal (glass) */}
       {showPlot && selectedPrediction && (
         <div className="history-modal-overlay" onClick={closePlotModal}>
           <div

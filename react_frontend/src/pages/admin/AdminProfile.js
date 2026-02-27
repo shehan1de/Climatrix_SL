@@ -1,14 +1,13 @@
-// pages/admin/AdminProfile.js
 import axios from "axios";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-    FaCamera,
-    FaEye,
-    FaEyeSlash,
-    FaLock,
-    FaSave,
-    FaTimes,
-    FaUser,
+  FaCamera,
+  FaEye,
+  FaEyeSlash,
+  FaLock,
+  FaSave,
+  FaTimes,
+  FaUser,
 } from "react-icons/fa";
 import logo from "../../assets/logo.png";
 import Footer from "../../components/Footer";
@@ -24,17 +23,15 @@ const formatDateTime = (iso) => {
   return d.toLocaleString();
 };
 
-// ✅ Always store localStorage profilePicture as "/image/xxx.png"
 const toRelativeImagePath = (pic) => {
   if (!pic) return "";
 
   let s = String(pic).trim();
   s = s.replace("/undefined/", "/").replace("undefined//", "");
 
-  // If API returns full URL, extract pathname
   if (/^https?:\/\//i.test(s)) {
     try {
-      s = new URL(s).pathname; // "/image/xxx.png"
+      s = new URL(s).pathname;
     } catch {
       const idx = s.indexOf("/image/");
       if (idx !== -1) s = s.slice(idx);
@@ -45,7 +42,6 @@ const toRelativeImagePath = (pic) => {
   return s;
 };
 
-// ✅ Same rendering logic as navbar (relative -> "/image/..")
 const toImgSrcLikeNavbar = (relativePath) => {
   if (!relativePath) return "https://via.placeholder.com/160?text=User";
   return `/${String(relativePath).replace(/^\/+/, "")}`;
@@ -88,8 +84,6 @@ const AdminProfile = () => {
   const [showConfirm, setShowConfirm] = useState(false);
 
   const fileRef = useRef(null);
-
-  // Auto-hide alert (same style as login)
   useEffect(() => {
     if (!alert.message) return;
     const t = setTimeout(() => setAlert({ type: "", message: "" }), 3000);
@@ -101,7 +95,7 @@ const AdminProfile = () => {
       const existing = JSON.parse(localStorage.getItem("user")) || {};
       const merged = { ...existing, ...updates };
       localStorage.setItem("user", JSON.stringify(merged));
-      window.dispatchEvent(new Event("userUpdated")); // ✅ navbar refresh hook
+      window.dispatchEvent(new Event("userUpdated"));
     } catch {}
   };
 
@@ -145,7 +139,7 @@ const AdminProfile = () => {
 
   useEffect(() => {
     fetchProfile();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    
   }, [userId]);
 
   const onPickImage = (file) => {
@@ -305,7 +299,6 @@ const AdminProfile = () => {
         </div>
 
         <div className="profile-grid">
-          {/* LEFT CARD */}
           <div className="profile-glass-card">
             <div className="profile-avatar-wrap">
               <div className="profile-avatar-ring">
@@ -356,7 +349,6 @@ const AdminProfile = () => {
             </div>
           </div>
 
-          {/* RIGHT CARD */}
           <div className="profile-glass-card">
             <form onSubmit={handleSave}>
               <div className="profile-section-title">
@@ -377,7 +369,6 @@ const AdminProfile = () => {
               </div>
 
               <div className="profile-password-grid">
-                {/* Current */}
                 <div>
                   <label className="profile-label">Current Password</label>
                   <div className="position-relative">
@@ -403,7 +394,6 @@ const AdminProfile = () => {
                   </div>
                 </div>
 
-                {/* New */}
                 <div>
                   <label className="profile-label">New Password</label>
                   <div className="position-relative">
@@ -427,7 +417,6 @@ const AdminProfile = () => {
                   </div>
                 </div>
 
-                {/* Confirm */}
                 <div>
                   <label className="profile-label">Confirm Password</label>
                   <div className="position-relative">

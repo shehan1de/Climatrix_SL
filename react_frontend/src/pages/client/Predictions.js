@@ -35,7 +35,6 @@ const ClientPredictions = () => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
 
-  // Alert timeout
   useEffect(() => {
     if (alert.message) {
       const timer = setTimeout(() => setAlert({ type: "", message: "" }), 3000);
@@ -43,7 +42,6 @@ const ClientPredictions = () => {
     }
   }, [alert]);
 
-  // ---------- Helpers ----------
   const prettyParam = (param) => {
     if (param === "rain_sum") return "Rainfall";
     if (param === "windspeed_10m_max") return "Wind Speed";
@@ -63,7 +61,6 @@ const ClientPredictions = () => {
     return String(v);
   };
 
-  // ✅ Unit helpers
   const getUnitByParameter = (param) => {
     const p = String(param || "").toLowerCase();
 
@@ -96,7 +93,6 @@ const ClientPredictions = () => {
       img.src = imgPath;
     });
 
-  // ===== Branded PDF download (no colons) =====
   const downloadPredictionPDF = async (p) => {
     try {
       const doc = new jsPDF("p", "mm", "a4");
@@ -105,23 +101,19 @@ const ClientPredictions = () => {
       const pageH = doc.internal.pageSize.getHeight();
       const margin = 14;
 
-      // Theme colors
       const darkBg = [8, 10, 12];
-      const accentBlue = [0, 174, 239];   // #00aeef
-      const accentGreen = [164, 198, 57]; // #a4c639
+      const accentBlue = [0, 174, 239];
+      const accentGreen = [164, 198, 57];
       const softWhite = [235, 235, 235];
 
-      // Background
       doc.setFillColor(...darkBg);
       doc.rect(0, 0, pageW, pageH, "F");
 
-      // Top bar (approx gradient)
       doc.setFillColor(...accentBlue);
       doc.rect(0, 0, pageW * 0.55, 18, "F");
       doc.setFillColor(...accentGreen);
       doc.rect(pageW * 0.55, 0, pageW * 0.45, 18, "F");
 
-      // Logo center (optional)
       let logoDataUrl = null;
       try {
         logoDataUrl = await toDataUrl(logo);
@@ -135,7 +127,6 @@ const ClientPredictions = () => {
         doc.addImage(logoDataUrl, "PNG", pageW / 2 - logoW / 2, 24, logoW, logoH);
       }
 
-      // Title
       doc.setTextColor(...softWhite);
       doc.setFont("helvetica", "bold");
       doc.setFontSize(18);
@@ -146,7 +137,6 @@ const ClientPredictions = () => {
       doc.setTextColor(185, 185, 185);
       doc.text("Prediction Report", pageW / 2, 56, { align: "center" });
 
-      // Glass card box
       const cardX = margin;
       const cardY = 64;
       const cardW = pageW - margin * 2;
@@ -158,12 +148,10 @@ const ClientPredictions = () => {
       doc.setLineWidth(0.2);
       doc.rect(cardX, cardY, cardW, cardH, "S");
 
-      // Label/value layout (NO colons)
       const labelX = cardX + 10;
       const valueX = cardX + 55;
       let y = cardY + 16;
 
-      // ✅ Predicted date/time from predictedAt
       const predictedTime = p.predictedAt || p.createdAt;
 
       const rows = [
@@ -190,7 +178,6 @@ const ClientPredictions = () => {
         y += 8;
       });
 
-      // Summary
       let msgY = cardY + cardH + 14;
 
       doc.setTextColor(240, 240, 240);
@@ -209,7 +196,6 @@ const ClientPredictions = () => {
 
       msgY += msgLines.length * 5 + 10;
 
-      // Plot (optional)
       if (p.forecast_plot) {
         const imgData = `data:image/png;base64,${p.forecast_plot}`;
         const plotH = 80;
@@ -237,7 +223,6 @@ const ClientPredictions = () => {
         doc.addImage(imgData, "PNG", margin + 4, msgY + 4, pageW - margin * 2 - 8, plotH - 8);
       }
 
-      // Footer
       doc.setFont("helvetica", "normal");
       doc.setFontSize(9);
       doc.setTextColor(160, 160, 160);
@@ -256,7 +241,6 @@ const ClientPredictions = () => {
     }
   };
 
-  // ---------- Predict ----------
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -272,7 +256,6 @@ const ClientPredictions = () => {
       const payload = { ...form, userId };
       const res = await API.post("/predict", payload);
 
-      // ✅ attach predicted time here
       setAlert({ type: "success", message: "Prediction generated!" });
       setResult({
         ...res.data,
@@ -311,7 +294,6 @@ const ClientPredictions = () => {
         </div>
 
         <div className="pred-grid-single">
-          {/* FORM */}
           <div className="pred-glass-card text-white">
             <h4 className="fw-bold mb-3">Prediction Form</h4>
 
@@ -367,7 +349,6 @@ const ClientPredictions = () => {
             </form>
           </div>
 
-          {/* RESULT */}
           <div className="pred-glass-card text-white">
             <h4 className="fw-bold mb-3">Prediction Result</h4>
 
@@ -398,7 +379,6 @@ const ClientPredictions = () => {
                     <span className="pred-result-value">{result.min_or_max}</span>
                   </div>
 
-                  {/* ✅ Value + Unit */}
                   <div className="pred-result-row">
                     <span className="pred-result-label">Predicted Value</span>
                     <span className="pred-result-value fw-bold">
@@ -419,7 +399,6 @@ const ClientPredictions = () => {
                   )}
                 </div>
 
-                {/* ✅ PDF button */}
                 <button
                   type="button"
                   className="btn btn-outline-light w-100 mt-3"
@@ -428,8 +407,6 @@ const ClientPredictions = () => {
                   <FaDownload className="me-2" />
                   Download PDF Report
                 </button>
-
-                {/* ✅ Plot under PDF button */}
                 {result.forecast_plot && (
                   <div className="mt-3 text-center">
                     <img

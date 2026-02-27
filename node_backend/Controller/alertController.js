@@ -1,12 +1,6 @@
-// Controller/alertController.js
 const User = require("../Model/User");
 const sendAlertEmail = require("../Service/sendAlertEmail");
 
-// ✅ POST /api/admin/alerts/send
-// Body supports:
-// 1) Bulk: { alertType, subject, message, sendToRole: "Client" | "All" }
-// 2) Single: { alertType, subject, message, targetUserId: 4 }
-// 3) Multi: { alertType, subject, message, targetUserIds: [2,4,9] }
 const sendAlertToEnabledUsers = async (req, res) => {
   try {
     const {
@@ -22,27 +16,22 @@ const sendAlertToEnabledUsers = async (req, res) => {
       return res.status(400).json({ message: "Message is required" });
     }
 
-    // ✅ Base filter (only enabled users can receive alerts)
     const filter = { emailAlertsEnabled: true };
 
-    // ✅ If frontend sends a single target user
     if (targetUserId !== undefined && targetUserId !== null && targetUserId !== "") {
       filter.userId = Number(targetUserId);
     }
 
-    // ✅ If frontend sends multiple selected users
     if (Array.isArray(targetUserIds) && targetUserIds.length > 0) {
       filter.userId = { $in: targetUserIds.map((id) => Number(id)) };
     }
 
-    // ✅ Apply role filter ONLY when not targeting specific users
     const usingSpecificTargets =
       (targetUserId !== undefined && targetUserId !== null && targetUserId !== "") ||
       (Array.isArray(targetUserIds) && targetUserIds.length > 0);
 
     if (!usingSpecificTargets) {
       if (sendToRole === "Client") filter.role = "Client";
-      // if sendToRole === "All" -> do not add role filter
     }
 
     const users = await User.find(filter).select(
@@ -62,7 +51,6 @@ const sendAlertToEnabledUsers = async (req, res) => {
     let sent = 0;
     let failed = 0;
 
-    // ✅ sequential send (safe for Gmail SMTP)
     for (const u of users) {
       try {
         await sendAlertEmail({

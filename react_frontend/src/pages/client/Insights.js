@@ -1,6 +1,3 @@
-// pages/client/InsightsTrends.js
-// ✅ If you want charts, install once:
-// npm i recharts
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import logo from "../../assets/logo.png";
@@ -26,18 +23,16 @@ import {
   FaSyncAlt
 } from "react-icons/fa";
 
-// ---------- Helpers ----------
 const safeText = (v) => (v === null || v === undefined || v === "" ? "—" : String(v));
 
 const prettyParam = (param) => {
   if (param === "rain_sum") return "Rainfall";
   if (param === "windspeed_10m_max") return "Wind Speed";
   if (param === "windgusts_10m_max") return "Wind Gusts";
-  return param; // backend may already store friendly label
+  return param;
 };
 
 const paramUnit = (param) => {
-  // adjust if you prefer different units
   if (param === "rain_sum" || String(param).toLowerCase().includes("rain")) return "mm";
   if (param === "windspeed_10m_max" || String(param).toLowerCase().includes("wind speed")) return "km/h";
   if (param === "windgusts_10m_max" || String(param).toLowerCase().includes("gust")) return "km/h";
@@ -63,8 +58,7 @@ const toDayKey = (iso) => {
 const toWeekKey = (iso) => {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return "Unknown";
-  // ISO-ish week bucket (simple): Monday-based week start
-  const day = d.getDay(); // 0 Sun..6 Sat
+  const day = d.getDay();
   const diff = (day === 0 ? -6 : 1) - day;
   const weekStart = new Date(d);
   weekStart.setDate(d.getDate() + diff);
@@ -78,7 +72,6 @@ const normalizeRisk = (r) => {
   return "Low Risk";
 };
 
-// Small SVG sparkline (no extra libs)
 const Sparkline = ({ data = [], width = 110, height = 28 }) => {
   if (!Array.isArray(data) || data.length < 2) return <span className="text-white-50">—</span>;
   const min = Math.min(...data);
@@ -99,7 +92,6 @@ const Sparkline = ({ data = [], width = 110, height = 28 }) => {
   );
 };
 
-// ---------- Main Component ----------
 const InsightsTrends = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user?.userId;
@@ -108,16 +100,14 @@ const InsightsTrends = () => {
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState({ type: "", message: "" });
 
-  // Filters
-  const [datePreset, setDatePreset] = useState("30"); // 7 | 30 | 90 | all | custom
-  const [fromDate, setFromDate] = useState(""); // yyyy-mm-dd
-  const [toDate, setToDate] = useState("");     // yyyy-mm-dd
+  const [datePreset, setDatePreset] = useState("30");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
   const [cityFilter, setCityFilter] = useState("all");
   const [paramFilter, setParamFilter] = useState("all");
   const [timeframeFilter, setTimeframeFilter] = useState("all");
   const [riskFilter, setRiskFilter] = useState("all");
 
-  // Alerts auto hide
   useEffect(() => {
     if (!alert.message) return;
     const t = setTimeout(() => setAlert({ type: "", message: "" }), 3000);
@@ -140,10 +130,8 @@ const InsightsTrends = () => {
 
   useEffect(() => {
     fetchPredictions();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
-  // Options (from stored history)
   const cityOptions = useMemo(() => {
     const set = new Set(predictions.map((p) => p.city).filter(Boolean));
     return ["all", ...Array.from(set).sort((a, b) => a.localeCompare(b))];
@@ -154,7 +142,6 @@ const InsightsTrends = () => {
     return ["all", ...Array.from(set)];
   }, [predictions]);
 
-  // Date range filter calculation
   const dateRange = useMemo(() => {
     const now = new Date();
     if (datePreset === "custom") {
@@ -170,7 +157,6 @@ const InsightsTrends = () => {
     return { from, to: now };
   }, [datePreset, fromDate, toDate]);
 
-  // Filtered predictions
   const filtered = useMemo(() => {
     const { from, to } = dateRange;
 
@@ -191,7 +177,6 @@ const InsightsTrends = () => {
     });
   }, [predictions, dateRange, cityFilter, paramFilter, timeframeFilter, riskFilter]);
 
-  // ---------- KPIs ----------
   const kpis = useMemo(() => {
     const total = filtered.length;
 
@@ -222,8 +207,6 @@ const InsightsTrends = () => {
     };
   }, [filtered]);
 
-  // ---------- Charts data ----------
-  // 1) Value over time (daily average)
   const valueOverTime = useMemo(() => {
     const bucket = {};
     filtered.forEach((p) => {
@@ -245,7 +228,6 @@ const InsightsTrends = () => {
       .sort((a, b) => a.date.localeCompare(b.date));
   }, [filtered]);
 
-  // 2) Risk distribution (weekly)
   const riskWeekly = useMemo(() => {
     const bucket = {};
     filtered.forEach((p) => {
@@ -261,7 +243,6 @@ const InsightsTrends = () => {
     return Object.values(bucket).sort((a, b) => a.week.localeCompare(b.week));
   }, [filtered]);
 
-  // 3) Count by timeframe
   const countByTimeframe = useMemo(() => {
     const counts = { day: 0, week: 0, month: 0, unknown: 0 };
     filtered.forEach((p) => {
@@ -279,11 +260,9 @@ const InsightsTrends = () => {
     ];
   }, [filtered]);
 
-  // ---------- Smart insights (text) ----------
   const insightsText = useMemo(() => {
     if (filtered.length === 0) return [];
 
-    // Most risky city (high risk count)
     const highByCity = {};
     filtered.forEach((p) => {
       if (!p.city) return;
@@ -292,7 +271,6 @@ const InsightsTrends = () => {
     });
     const mostRiskyCity = Object.entries(highByCity).sort((a, b) => b[1] - a[1])[0]?.[0];
 
-    // Highest avg value city (overall)
     const sumByCity = {};
     filtered.forEach((p) => {
       if (!p.city) return;
@@ -306,7 +284,6 @@ const InsightsTrends = () => {
       .map(([city, s]) => ({ city, avg: s.sum / s.n }))
       .sort((a, b) => b.avg - a.avg)[0];
 
-    // Parameter with most moderate/high
     const riskByParam = {};
     filtered.forEach((p) => {
       if (!p.parameter) return;
@@ -326,7 +303,6 @@ const InsightsTrends = () => {
     return lines;
   }, [filtered]);
 
-  // ---------- Export ----------
   const downloadCSV = () => {
     try {
       const rows = [
@@ -360,14 +336,6 @@ const InsightsTrends = () => {
     }
   };
 
-  // // Simple PDF (summary only) – uses browser print-friendly approach (optional)
-  // const downloadPDF = () => {
-  //   // If you want full branded jsPDF charts like your other pages, tell me,
-  //   // and I’ll plug the same themed PDF builder here.
-  //   window.print();
-  // };
-
-  // High-risk alerts list
   const highRiskAlerts = useMemo(() => {
     return [...filtered]
       .filter((p) => normalizeRisk(p.disaster_risk) === "High Risk")
@@ -377,14 +345,12 @@ const InsightsTrends = () => {
 
   return (
     <div className="ins-page d-flex flex-column">
-      {/* Alerts */}
       {alert.message && (
         <div className={`login-alert ${alert.type === "error" ? "login-alert-error" : "login-alert-success"}`}>
           {alert.message}
         </div>
       )}
 
-      {/* Loading */}
       {loading && (
         <div className="loading-overlay">
           <img src={logo} alt="Loading..." className="spinner-logo-large" />
@@ -392,7 +358,6 @@ const InsightsTrends = () => {
       )}
 
       <div className="ins-container flex-grow-1">
-        {/* Header */}
         <div className="ins-hero glass-panel">
           <div className="ins-hero-left">
             <h1 className="ins-title">
@@ -410,13 +375,9 @@ const InsightsTrends = () => {
             <button className="btn btn-outline-light ins-icon-btn" onClick={downloadCSV} title="Download CSV">
               <FaFileCsv />
             </button>
-            {/* <button className="btn btn-outline-light ins-icon-btn" onClick={downloadPDF} title="Download PDF">
-              <FaDownload />
-            </button> */}
           </div>
         </div>
 
-        {/* Filters */}
         <div className="ins-filters glass-panel">
           <div className="ins-filters-title">
             <FaFilter className="me-2" />
@@ -525,8 +486,6 @@ const InsightsTrends = () => {
             Results <strong className="text-white">{filtered.length}</strong>
           </div>
         </div>
-
-        {/* KPI cards */}
         <div className="ins-kpi-grid">
           <div className="ins-kpi glass-panel">
             <div className="ins-kpi-label">Total predictions</div>
@@ -549,9 +508,7 @@ const InsightsTrends = () => {
           </div>
         </div>
 
-        {/* Main grid */}
         <div className="ins-main-grid">
-          {/* Charts */}
           <div className="ins-charts">
             <div className="glass-panel ins-chart-card">
               <div className="ins-card-title">Predicted value over time (daily average)</div>
@@ -610,8 +567,6 @@ const InsightsTrends = () => {
               </div>
             </div>
           </div>
-
-          {/* Right panel */}
           <div className="ins-side">
             <div className="glass-panel ins-side-card">
               <div className="ins-card-title">Smart insights</div>
@@ -654,8 +609,6 @@ const InsightsTrends = () => {
                           {safeText(p.predicted_value)} {paramUnit(p.parameter)}
                         </span>
                       </div>
-
-                      {/* Sparkline if series exists */}
                       <div className="ins-alert-spark">
                         <Sparkline data={p.forecast_series || []} />
                       </div>
@@ -698,8 +651,6 @@ const InsightsTrends = () => {
             </div>
           </div>
         </div>
-
-        {/* Bottom table */}
         <div className="glass-panel ins-table-card">
           <div className="ins-card-title">Key predictions (filtered)</div>
 

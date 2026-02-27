@@ -29,10 +29,8 @@ const Login = () => {
 
       const { token, user } = res.data;
 
-      // ✅ Save token
       localStorage.setItem("token", token);
 
-      // ✅ Save user info for profile & dashboard
       localStorage.setItem("user", JSON.stringify({
         id: user.id,
         userId: user.userId,
@@ -44,7 +42,6 @@ const Login = () => {
 
       setAlert({ type: "success", message: "Login successful!" });
 
-      // ✅ Role-based navigation
       if (user.role === "Admin") {
         navigate("/admin/dashboard");
       } else {

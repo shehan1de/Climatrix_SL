@@ -1,4 +1,3 @@
-// pages/admin/AdminDashboard.js
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import {
@@ -28,12 +27,10 @@ const AdminDashboard = () => {
 
   const adminId = stored?.userId;
 
-  // ✅ Alerts enable state (same as client)
   const [alertsEnabled, setAlertsEnabled] = useState(false);
   const [savingAlerts, setSavingAlerts] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");
 
-  // ✅ Load current alerts enabled/disabled from DB
   useEffect(() => {
     const loadPref = async () => {
       if (!adminId) return;
@@ -42,20 +39,18 @@ const AdminDashboard = () => {
         const res = await API.get(`${API_PREFIX}/user/${adminId}/alerts`);
         setAlertsEnabled(!!res.data?.emailAlertsEnabled);
       } catch {
-        // ignore silently
       }
     };
 
     loadPref();
   }, [adminId]);
 
-  // ✅ Toggle only ON/OFF
   const toggleAlerts = async () => {
     if (!adminId) return;
 
     const next = !alertsEnabled;
 
-    setAlertsEnabled(next); // optimistic UI
+    setAlertsEnabled(next);
     setSavingAlerts(true);
     setAlertMsg("");
 
@@ -66,7 +61,6 @@ const AdminDashboard = () => {
 
       setAlertMsg(next ? "Email alerts enabled" : "Email alerts disabled");
     } catch (e) {
-      // rollback if failed
       setAlertsEnabled(!next);
       setAlertMsg("Failed to update alert preference");
     } finally {
@@ -77,7 +71,6 @@ const AdminDashboard = () => {
 
   return (
     <div className="client-dashboard-page dashboard-bg">
-      {/* Welcome Section */}
       <div className="dashboard-hero text-center">
         <h1 className="dashboard-title">
           <span className="brand-gradient">Welcome,</span> {user?.name}.
@@ -88,9 +81,7 @@ const AdminDashboard = () => {
         </p>
       </div>
 
-      {/* Cards Grid */}
       <div className="dashboard-cards-grid">
-        {/* Card 1: User Management */}
         <div className="dashboard-feature-card text-white">
           <div className="dashboard-card-top">
             <div className="dashboard-card-icon">
@@ -112,7 +103,6 @@ const AdminDashboard = () => {
           </button>
         </div>
 
-        {/* Card 2: Alert System Management */}
         <div className="dashboard-feature-card text-white">
           <div className="dashboard-card-top">
             <div className="dashboard-card-icon">
@@ -134,7 +124,6 @@ const AdminDashboard = () => {
           </button>
         </div>
 
-        {/* Card 3: Prediction History */}
         <div className="dashboard-feature-card text-white">
           <div className="dashboard-card-top">
             <div className="dashboard-card-icon">
@@ -156,7 +145,6 @@ const AdminDashboard = () => {
           </button>
         </div>
 
-        {/* ✅ Card 4: Admin Email Alerts (Enable/Disable for admin account) */}
         <div className="dashboard-feature-card text-white">
           <div className="dashboard-card-top">
             <div className="dashboard-card-icon">
@@ -191,7 +179,6 @@ const AdminDashboard = () => {
           )}
         </div>
 
-        {/* Card 5: Question Management */}
         <div className="dashboard-feature-card text-white">
           <div className="dashboard-card-top">
             <div className="dashboard-card-icon">

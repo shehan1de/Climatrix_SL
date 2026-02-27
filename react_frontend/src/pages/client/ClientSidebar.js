@@ -7,7 +7,6 @@ const ClientNavbar = () => {
   const navigate = useNavigate();
   const [showConfirm, setShowConfirm] = useState(false);
 
-  // ✅ reactive user state (auto refresh)
   const [user, setUser] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem("user")) || null;
@@ -16,7 +15,6 @@ const ClientNavbar = () => {
     }
   });
 
-  // ✅ listen profile updates
   useEffect(() => {
     const refresh = () => {
       try {
@@ -30,14 +28,12 @@ const ClientNavbar = () => {
     return () => window.removeEventListener("userUpdated", refresh);
   }, []);
 
-  // ✅ same image logic you already used
   const profilePicPath = useMemo(() => {
     return user?.profilePicture
       ? `/${String(user.profilePicture).replace(/^\/+/, "")}`
       : "https://via.placeholder.com/50";
   }, [user?.profilePicture]);
 
-  // ✅ role-based profile redirect
   const handleProfileRedirect = () => {
     if (user?.role === "Admin") {
       navigate("/admin/profile");
@@ -55,15 +51,12 @@ const ClientNavbar = () => {
     <>
       <div className="navbar-wrapper position-absolute w-100">
         <div className="navbar-container d-flex align-items-center justify-content-between">
-          {/* 🔹 Logo Section */}
           <div className="glass-navbar brand-glass d-flex align-items-center">
             <img src={logo} alt="Climatrix Logo" height="52" />
             <span className="brand-gradient fw-bold fs-4 ms-2">
               CLIMATRIX <span style={{ color: "#00FF41" }}>SL</span>
             </span>
           </div>
-
-          {/* 🔹 Profile Section (Clickable) */}
           <div
             className="glass-navbar nav-glass d-flex align-items-center gap-3 px-3 py-1 profile-clickable"
             onClick={handleProfileRedirect}
@@ -94,7 +87,7 @@ const ClientNavbar = () => {
             <button
               className="btn btn-danger d-flex align-items-center gap-1"
               onClick={(e) => {
-                e.stopPropagation(); // ✅ prevent redirect when clicking logout
+                e.stopPropagation();
                 setShowConfirm(true);
               }}
             >
